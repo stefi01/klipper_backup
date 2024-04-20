@@ -1,0 +1,31 @@
+##  commands
+##  pid autotune:     pid_calibrate heater=extruder target=245   for abs
+##  pid autotune bed: PID_CALIBRATE HEATER=heater_bed TARGET=100
+##  input shapper querry:  ACCELEROMETER_QUERY
+##  #run input shaper: TEST_RESONANCES AXIS=X     followed by Y AXIS
+##  AFTER RUNNING X AND Y RESONANCE TEST RUN THESE TWO COMANDS IN PUTTY....
+##  ~/klipper/scripts/calibrate_shaper.py /tmp/resonances_x_*.csv -o /tmp/shaper_calibrate_x.png
+##  ~/klipper/scripts/calibrate_shaper.py /tmp/resonances_y_*.csv -o /tmp/shaper_calibrate_y.png
+##  set z offset https://www.youtube.com/watch?v=1wBi1mXVVEQ&list=PLSdS8RXoNhoRzDMZr9bK9-mfZjJzyWP8E&index=15
+##   Z_ENDSTOP_CALIBRATE    calibrate z-offset
+##   PROBE_CALIBRATE   calibrate probe
+##   ./kiauh/kiauh.sh     kiauh terminal command
+##  e step calibration     G92 E0   then   G1 E100 F100   to extrude 100mm   
+##   SAVE_CONFIG    saves changes
+
+##################################################
+
+## start gcode in orca slicer
+M104 S0 ; Stops SuperSlicer from sending temp waits separately
+M140 S0
+PRINT_START EXTRUDER=[nozzle_temperature_initial_layer] BED=[bed_temperature_initial_layer_single] Chamber=[chamber_temperature]
+
+
+##################################################
+## end gcode in orcaslicer    
+
+ G91 ; Set to relative mode
+ G0 Z20 ; Relative Z move up by 20 units
+ G90 ; Set to absolute mode
+ G0 X0 Y0 ; Absolute move to XY origin
+##################################################
