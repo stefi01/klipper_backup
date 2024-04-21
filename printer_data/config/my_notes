@@ -7,6 +7,7 @@
 ##  ~/klipper/scripts/calibrate_shaper.py /tmp/resonances_x_*.csv -o /tmp/shaper_calibrate_x.png
 ##  ~/klipper/scripts/calibrate_shaper.py /tmp/resonances_y_*.csv -o /tmp/shaper_calibrate_y.png
 ##  set z offset https://www.youtube.com/watch?v=1wBi1mXVVEQ&list=PLSdS8RXoNhoRzDMZr9bK9-mfZjJzyWP8E&index=15
+##   calibrate_z (all small letters)    calibrates enstop, probe and end and then can do z offset, move to bed center then type G90 to set to absolute possision then use GO z1   1 meaning move nozzle one, do paper test and save 
 ##   Z_ENDSTOP_CALIBRATE    calibrate z-offset
 ##   PROBE_CALIBRATE   calibrate probe
 ##   ./kiauh/kiauh.sh     kiauh terminal command
