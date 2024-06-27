@@ -11,7 +11,7 @@
 ##   Z_ENDSTOP_CALIBRATE    calibrate z-offset
 ##   PROBE_CALIBRATE   calibrate probe
 ##   ./kiauh/kiauh.sh     kiauh terminal command
-##  e step calibration     G92 E0   then   G1 E100 F100   to extrude 100mm   
+##  e step calibration     G92 E0   then   G1 E100 F100   to extrude 100mm   https://www.youtube.com/watch?v=5Suy_MGGFL4&t=247s   9min 12  and https://www.youtube.com/watch?v=ZfBOijl0Kd0  at 4 min 47seconds
 ##  save a endstop offset change       Z_OFFSET_APPLY_ENDSTOP followed by SAVE_CONFIG
 ##   link to lots of commands   https://www.klipper3d.org/G-Codes.html
 
