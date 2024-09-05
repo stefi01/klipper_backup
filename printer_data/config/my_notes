@@ -34,3 +34,175 @@ PRINT_START EXTRUDER=[nozzle_temperature_initial_layer] BED=[bed_temperature_ini
  G90 ; Set to absolute mode
  G0 X0 Y0 ; Absolute move to XY origin
 ##################################################
+
+##Z Offset Adjustment
+If you did not run PID tuning, set your extruder to 245C and heated bed to 100C and let the printer heat up for at least 15 minutes.
+
+Initial / Simple Process
+Preparation
+
+V1/Trident: Run a G28, and then a Z_TILT_ADJUST, and then another G28.
+V2: Run a G28, and then a QUAD_GANTRY_LEVEL, and then another G28.
+All others: Run a G28.
+Move the nozzle to the center of the bed if it is not already.
+Clear any stored bed meshes with BED_MESH_CLEAR
+Run Z_ENDSTOP_CALIBRATE (V0, Trident, V2) or PROBE_CALIBRATE (Switchwire)
+
+Slowly move the nozzle toward the bed by using TESTZ Z=-1 until the nozzle is relatively close to the bed, and then stepping down with TESTZ Z=-0.1 until the nozzle touches a piece of paper on top of the build plate. If you go too far down, you can move the nozzle back up with: TESTZ Z=0.1. Once you are satisfied with the nozzle height, run ACCEPT and then SAVE_CONFIG.
+
+Important: Klipper assumes that this process is being done cold. If being performed hot, do an additional TESTZ Z=-0.1 before accepting.
+
+If an “out of bounds” error occurs, send Z_ENDSTOP_CALIBRATE, ACCEPT, and then SAVE_CONFIG. This will redefine the 0 bed height so you will be able to get closer.
+
+V2: If you get this error it likely means that the shaft for your Z Endstop is too long and may catch on the print head during a print. It is best to cut the shaft or raise the bed (with a washer, for instance) so that it is within 1mm of the build surface.
+
+Fine Tuning Z Height
+With LCD Screen
+The Z offset can be adjusted during a print using the Tune menu on the display, and the printer configuration can be updated with this new value. Remember that higher values for the position_endstop means that the nozzle will be closer to the bed.
+
+
+further adjustment....
+
+All of the above methods are “transient”. The changes are lost as soon as your printer restarts. Once you find an adjustment you are happy with, you may make it permanent, by applying it to the probe’s z_offset in your config file: run the command Z_OFFSET_APPLY_PROBE followed by SAVE_CONFIG. This will restart your printer, with the adjustment permanently applied to the probe offset.
+https://docs.vorondesign.com/build/startup/#fine-tuning-z-height
+##################################################
+
+Available extended commands:
+ACTIVATE_EXTRUDER: Change the active extruder
+BED_CENTER: G-Code macro
+BED_MESH_CALIBRATE: G-Code macro
+BED_MESH_CLEAR: Clear the Mesh so no z-adjustment is made
+BED_MESH_MAP: Serialize mesh and output to terminal
+BED_MESH_OFFSET: Add X/Y offsets to the mesh lookup
+BED_MESH_OUTPUT: Retrieve interpolated grid of probed z-points
+BED_MESH_PROFILE: Bed Mesh Persistent Storage management
+BTT_QUAD_GANTRY_LEVEL: Renamed builtin of 'QUAD_GANTRY_LEVEL'
+CANCEL_PRINT: Cancel the actual running print
+CANCEL_PRINT_BASE: Renamed builtin of 'CANCEL_PRINT'
+CLEAN_NOZZLE: G-Code macro
+CLEAN_PURGE_NOZZLE: G-Code macro
+CLEAR_PAUSE: Clears the current paused state without resuming the print
+DUMP_TMC  : Read and display TMC stepper driver registers
+EXCLUDE_OBJECT: Cancel moves inside a specified objects
+EXCLUDE_OBJECT_DEFINE: Provides a summary of an object
+EXCLUDE_OBJECT_END: Marks the end the current object
+EXCLUDE_OBJECT_START: Marks the beginning the current object as labeled
+FILAMENT_LOAD: G-Code macro
+FIRMWARE_RESTART: Restart firmware, host, and reload config
+G28       : G-Code macro
+G28.1     : Renamed builtin of 'G28'
+G32       : G-Code macro
+GET_POSITION: Return information on the current location of the toolhead
+HELP      : Report the list of available extended G-Code commands
+INIT_TMC  : Initialize TMC stepper driver registers
+M109      : G-Code macro
+M109.1    : Renamed builtin of 'M109'
+M190      : G-Code macro
+M190.1    : Renamed builtin of 'M190'
+M301      : G-Code macro
+MANUAL_PROBE: Start manual probe helper script
+PAUSE     : Pause the actual running print
+PAUSE_BASE: Renamed builtin of 'PAUSE'
+PID_CALIBRATE: Run PID calibration test
+PRINT_END : G-Code macro
+PRINT_START: G-Code macro
+PROBE     : Probe Z-height at current XY position
+PROBE_ACCURACY: Probe Z-height accuracy at current XY position
+PROBE_CALIBRATE: Calibrate the probe's z_offset
+QUAD_GANTRY_LEVEL: G-Code macro
+QUERY_ADC : Report the last value of an analog pin
+QUERY_BUTTON: Report on the state of a button
+QUERY_ENDSTOPS: Report on the status of each endstop
+QUERY_PROBE: Return the status of the z-probe
+RESPOND   : Echo the message prepended with a prefix
+RESTART   : Reload config file and restart host software
+RESTORE_GCODE_STATE: Restore a previously saved G-Code state
+RESUME    : Resume the actual running print
+RESUME_BASE: Renamed builtin of 'RESUME'
+RUN_SHELL_COMMAND: Run a linux shell command
+SAVE_CONFIG: Overwrite config file and restart
+SAVE_GCODE_STATE: Save G-Code coordinate state
+SDCARD_PRINT_FILE: Loads a SD file and starts the print.  May include files in subdirectories.
+SDCARD_RESET_FILE: Clears a loaded SD File. Stops the print if necessary
+SET_DISPLAY_TEXT: Set or clear the display message
+SET_EXTRUDER_ROTATION_DISTANCE: Set extruder rotation distance
+SET_GCODE_OFFSET: Set a virtual offset to g-code positions
+SET_GCODE_VARIABLE: Set the value of a G-Code macro variable
+SET_HEATER_TEMPERATURE: Sets a heater temperature
+SET_IDLE_TIMEOUT: Set the idle timeout in seconds
+SET_INPUT_SHAPER: Set cartesian parameters for input shaper
+SET_LED   : Set the color of an LED
+SET_LED_TEMPLATE: Assign a display_template to an LED
+SET_LOGO_LEDS_OFF: G-Code macro
+SET_NOZZLE_LEDS_OFF: G-Code macro
+SET_NOZZLE_LEDS_ON: G-Code macro
+SET_PAUSE_AT_LAYER: Enable/disable a pause if a given layer number is reached
+SET_PAUSE_NEXT_LAYER: Enable a pause if the next layer is reached
+SET_PIN   : Set the value of an output pin
+SET_PRESSURE_ADVANCE: Set pressure advance parameters
+SET_PRINT_STATS_INFO: Overwrite, to get pause_next_layer and pause_at_layer feature
+SET_PRINT_STATS_INFO_BASE: Renamed builtin of 'SET_PRINT_STATS_INFO'
+SET_STEPPER_ENABLE: Enable/disable individual stepper by name
+SET_TMC_CURRENT: Set the current of a TMC driver
+SET_TMC_FIELD: Set a register field of a TMC driver
+SET_VELOCITY_LIMIT: Set printer velocity limits
+STATUS    : Report the printer status
+STATUS_BUSY: G-Code macro
+STATUS_CALIBRATING_Z: G-Code macro
+STATUS_CLEANING: G-Code macro
+STATUS_ERROR_HOTKEY: G-Code macro
+STATUS_HEATING: G-Code macro
+STATUS_HOMING: G-Code macro
+STATUS_LEVELING: G-Code macro
+STATUS_MESHING: G-Code macro
+STATUS_OFF: G-Code macro
+STATUS_PRINTING: G-Code macro
+STATUS_PRINTING_HOTKEY: G-Code macro
+STATUS_READY: G-Code macro
+STATUS_STANDBY_HOTKEY: G-Code macro
+STEPPER_BUZZ: Oscillate a given stepper to help id it
+SYNC_EXTRUDER_MOTION: Set extruder stepper motion queue
+TEMPERATURE_WAIT: Wait for a temperature on a sensor
+TEST_PROBE_ACCURACY: G-Code macro
+TEST_SPEED: Test for max speed and acceleration parameters for the printer. Procedure: Home -> ReadPositionFromMCU -> MovesToolhead@Vel&Accel -> Home -> ReadPositionfromMCU
+TEST_TEMP : G-Code macro
+TUNING_TOWER: Tool to adjust a parameter at each Z height
+TURN_OFF_HEATERS: Turn off all heaters
+UPDATE_DELAYED_GCODE: Update the duration of a delayed_gcode
+UPDATE_GIT: G-Code macro
+Z_DOWN_0.01MM: G-Code macro
+Z_ENDSTOP_CALIBRATE: Calibrate a Z endstop
+Z_OFFSET_APPLY_ENDSTOP: Adjust the z endstop_position
+Z_OFFSET_APPLY_PROBE: Adjust the probe's z_offset
+Z_UP_0.01MM: G-Code macro
+_BED_MESH_CALIBRATE: Renamed builtin of 'BED_MESH_CALIBRATE'
+_BUTTON_B1: G-Code macro
+_BUTTON_B10: G-Code macro
+_BUTTON_B11: G-Code macro
+_BUTTON_B12: G-Code macro
+_BUTTON_B2: G-Code macro
+_BUTTON_B3: G-Code macro
+_BUTTON_B4: G-Code macro
+_BUTTON_B5: G-Code macro
+_BUTTON_B6: G-Code macro
+_BUTTON_B8: G-Code macro
+_BUTTON_B9: G-Code macro
+_CLIENT_EXTRUDE: Extrudes, if the extruder is hot enough
+_CLIENT_RETRACT: Retracts, if the extruder is hot enough
+_HOTKEY_VARS: G-Code macro
+_KAMP_SETTINGS: This macro contains all adjustable settings for KAMP
+_KNOMI_STATUS: G-Code macro
+_SB_VARS  : G-Code macro
+_SET_B1_LEDS: G-Code macro
+_SET_B2_LEDS: G-Code macro
+_SET_HOTKEY_LEDS: G-Code macro
+_SET_HOTKEY_LEDS_BY_NAME: G-Code macro
+_SET_LOGO_LEDS: G-Code macro
+_SET_NOZZLE_LEDS: G-Code macro
+_SET_SB_LEDS: G-Code macro
+_SET_SB_LEDS_BY_NAME: G-Code macro
+_STATUS_BUTTON_BUSY: G-Code macro
+_STATUS_BUTTON_ERROR: G-Code macro
+_STATUS_BUTTON_READY: G-Code macro
+_STATUS_BUTTON_STANDBY: G-Code macro
+_TOOLHEAD_PARK_PAUSE_CANCEL: Helper: park toolhead used in PAUSE and CANCEL_PRINT
